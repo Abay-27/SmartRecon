@@ -1,0 +1,5 @@
+{
+  "name": "SmartRecon",
+  "description": "Automated financial reconciliation tool for matching, comparing, and reconciling data between multiple sources with AI-powered mapping suggestions.",
+  "requestFramePermissions": []
+}

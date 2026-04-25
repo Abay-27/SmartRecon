@@ -1,0 +1,70 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile and subscription data",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "subscriptionStatus": { 
+          "type": "string", 
+          "enum": ["active", "inactive", "past_due"],
+          "description": "Current status of the user's subscription"
+        },
+        "plan": { "type": "string", "enum": ["free", "pro"] },
+        "expiresAt": { "type": "string", "format": "date-time", "description": "Subscription expiration date" },
+        "role": { "type": "string", "enum": ["admin", "user"] },
+        "accessStatus": { "type": "string", "enum": ["pending", "approved", "blocked"] },
+        "reconciliationCount": { "type": "number", "description": "Total number of reconciliations performed" }
+      },
+      "required": ["uid", "email"]
+    },
+    "Reconciliation": {
+      "title": "Reconciliation",
+      "description": "Historical reconciliation result",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "datasetAName": { "type": "string" },
+        "datasetBName": { "type": "string" },
+        "summary": { "type": "object" },
+        "settings": { "type": "object" }
+      },
+      "required": ["id", "userId", "timestamp"]
+    },
+    "PaymentRequest": {
+      "title": "Payment Request",
+      "description": "Manual payment verification request",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "userName": { "type": "string" },
+        "transactionId": { "type": "string" },
+        "amount": { "type": "number" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"] }
+      },
+      "required": ["id", "userId", "transactionId", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/reconciliations/{reconciliationId}": {
+      "schema": "Reconciliation",
+      "description": "Reconciliation history"
+    },
+    "/payment_requests/{requestId}": {
+      "schema": "PaymentRequest",
+      "description": "Pending manual payment verifications"
+    }
+  }
+}
